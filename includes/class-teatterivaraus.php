@@ -78,6 +78,7 @@ class Teatterivaraus {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->register_custom_post_types();
 
 	}
 
@@ -121,6 +122,11 @@ class Teatterivaraus {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-teatterivaraus-public.php';
+
+		/**
+		 * The class responsible for registering custom post types.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-teatterivaraus-post-types.php';
 
 		$this->loader = new Teatterivaraus_Loader();
 
@@ -172,6 +178,20 @@ class Teatterivaraus {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register custom post types
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function register_custom_post_types() {
+
+		$plugin_post_types = new Teatterivaraus_Post_Types();
+
+		$this->loader->add_action( 'init', $plugin_post_types, 'register' );
 
 	}
 
